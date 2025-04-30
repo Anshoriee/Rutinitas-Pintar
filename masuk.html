@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MASUK | Rutinitas Pintar</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+  <!-- Header -->
+  <header class="bg-white shadow p-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-blue-600">Rutinitas Pintar</h1>
+    <nav>
+      <a href="index.html" class="text-gray-700 hover:text-blue-600 mx-2">Beranda</a>
+      <a href="fitur.html" class="text-gray-700 hover:text-blue-600 mx-2">Fitur</a>
+      <a href="tentang.html" class="text-gray-700 hover:text-blue-600 mx-2">Tentang</a>
+      <a href="masuk.html" class="text-blue-600 font-semibold mx-2">Masuk</a>
+    </nav>
+  </header>
+
+  <!-- Login Section -->
+  <section class="flex justify-center items-center min-h-screen px-4 bg-gray-100">
+    <div class="bg-white shadow-lg rounded-xl w-full max-w-md p-8">
+      <h2 class="text-2xl font-bold text-center text-blue-600 mb-6">Masuk ke Akun Anda</h2>
+      <form action="#" method="POST" class="space-y-5">
+        <div>
+          <label for="email" class="block text-sm font-medium mb-1">Email</label>
+          <input type="email" id="email" name="email" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+          <label for="password" class="block text-sm font-medium mb-1">Kata Sandi</label>
+          <input type="password" id="password" name="password" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div class="flex justify-between items-center text-sm">
+          <label class="flex items-center">
+            <input type="checkbox" class="mr-2"> Ingat Saya
+          </label>
+          <a href="#" class="text-blue-600 hover:underline">Lupa kata sandi?</a>
+        </div>
+        <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition">Masuk</button>
+      </form>
+      <p class="text-center text-sm text-gray-600 mt-6">
+        Belum punya akun? <a href="daftar.html" class="text-blue-600 hover:underline">Daftar sekarang</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t py-6 text-center text-gray-600">
+    &copy; 2025 Rutinitas Pintar. All rights reserved.
+  </footer>
+
+</body>
+</html>
