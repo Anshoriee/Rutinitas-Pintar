@@ -4,31 +4,52 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rekomendasi Personal - Rutinitas Pintar</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100 text-gray-800">
 
-  <header class="bg-white shadow p-4 flex justify-between items-center">
-    <h1 class="text-2xl font-bold text-blue-600">Rutinitas Pintar</h1>
+  <!-- Header -->
+  <header class="bg-white shadow-lg p-4 flex justify-between items-center">
+    <a href="index.html"class="text-2xl font-bold text-blue-600">Rutinitas Pintar</a>
     <nav>
       <a href="index.html" class="text-gray-700 hover:text-blue-600 mx-2">Beranda</a>
       <a href="fitur.html" class="text-gray-700 hover:text-blue-600 mx-2">Fitur</a>
+      <a href="tentang.html" class="text-gray-700 hover:text-blue-600 mx-2">Tentang</a>
       <a href="masuk.html" class="text-gray-700 hover:text-blue-600 mx-2">Masuk</a>
     </nav>
   </header>
 
-  <section class="py-16 px-6 md:px-16 bg-white min-h-screen">
-    <h2 class="text-3xl font-bold text-center text-green-600 mb-8">Rekomendasi Personal</h2>
-    <p class="max-w-3xl mx-auto text-center text-gray-700 text-lg mb-6">
-      Sistem kami mempelajari pola aktivitas Anda dan memberikan rekomendasi jadwal serta kebiasaan yang dapat meningkatkan kualitas hidup Anda. Semuanya disesuaikan secara personal.
-    </p>
-    <ul class="max-w-3xl mx-auto list-disc list-inside text-gray-600 space-y-2">
-      <li>Rutinitas otomatis berdasarkan pola tidur dan kerja</li>
-      <li>Saran waktu terbaik untuk olahraga, belajar, dan istirahat</li>
-      <li>Penyesuaian dinamis berdasarkan pencapaian dan produktivitas</li>
-    </ul>
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-r from-purple-600 to-pink-500 text-white py-20 text-center">
+    <h2 class="text-4xl font-bold mb-4">Rekomendasi Personal</h2>
+    <p class="text-lg max-w-2xl mx-auto">Dapatkan saran kegiatan dan rutinitas berdasarkan kebiasaan, preferensi, dan tujuan pribadi Anda.</p>
   </section>
 
+  <!-- Konten Utama -->
+  <section class="py-16 px-6 md:px-16 bg-white">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+      <div>
+        <h3 class="text-2xl font-semibold mb-4">Rutinitas yang Disesuaikan</h3>
+        <p class="text-gray-700 mb-4">Sistem kami menggunakan analisis perilaku untuk memberikan rekomendasi yang relevan dan berguna agar Anda bisa menjalani hari lebih efektif.</p>
+        <ul class="list-disc list-inside text-gray-700">
+          <li>Saran aktivitas berdasarkan waktu luang Anda</li>
+          <li>Penyesuaian jadwal otomatis jika ada perubahan</li>
+          <li>Dukungan untuk berbagai gaya hidup (pekerja, pelajar, dll.)</li>
+        </ul>
+      </div>
+      <div>
+        <img src="img/fitur-rekomendasi.png" alt="Ilustrasi Rekomendasi Personal" class="rounded-lg shadow-md">
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="text-center py-12 bg-gray-100">
+    <h3 class="text-xl font-semibold mb-2">Jadikan rutinitas Anda lebih bermakna dan efisien!</h3>
+    <a href="daftar.html" class="inline-block mt-4 bg-blue-600 text-white px-6 py-3 rounded-full font-medium hover:bg-blue-700 transition">Coba Sekarang</a>
+  </section>
+
+  <!-- Footer -->
   <footer class="bg-white border-t py-6 text-center text-gray-600">
     &copy; 2025 Rutinitas Pintar. All rights reserved.
   </footer>
