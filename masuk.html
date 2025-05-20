@@ -9,8 +9,8 @@
 <body class="bg-gray-100 text-gray-800">
 
   <!-- Header -->
-  <header class="bg-white shadow-lg p-4 flex justify-between items-center">
-    <a href="index.html"class="text-2xl font-bold text-blue-600">Rutinitas Pintar</a>
+  <header class="bg-white shadow p-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-blue-600">Rutinitas Pintar</h1>
     <nav>
       <a href="index.html" class="text-gray-700 hover:text-blue-600 mx-2">Beranda</a>
       <a href="fitur.html" class="text-gray-700 hover:text-blue-600 mx-2">Fitur</a>
@@ -43,6 +43,13 @@
       <p class="text-center text-sm text-gray-600 mt-6">
         Belum punya akun? <a href="daftar.html" class="text-blue-600 hover:underline">Daftar sekarang</a>
       </p>
+
+      <!-- Google Sign In Button -->
+      <div class="mt-6">
+        <button onclick="googleLogin()" class="w-full bg-red-600 text-white py-2 rounded-lg font-semibold hover:bg-red-700 transition">
+          Masuk dengan Google
+        </button>
+      </div>
     </div>
   </section>
 
@@ -50,6 +57,41 @@
   <footer class="bg-white border-t py-6 text-center text-gray-600">
     &copy; 2025 Rutinitas Pintar. All rights reserved.
   </footer>
+
+  <!-- Firebase SDK & Script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD7M21ri1LlNiffyqW0zUfqyKJXIrFJKTY",
+      authDomain: "rutinitas-pintar-c04d8.firebaseapp.com",
+      projectId: "rutinitas-pintar-c04d8",
+      storageBucket: "rutinitas-pintar-c04d8.firebasestorage.app",
+      messagingSenderId: "296143284312",
+      appId: "1:296143284312:web:b237a3937eff666d3e422d",
+      measurementId: "G-ES2G5120CT"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const auth = getAuth();
+    const provider = new GoogleAuthProvider();
+
+    window.googleLogin = function () {
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          const user = result.user;
+          alert("Selamat datang, " + user.displayName);
+          window.location.href = "index.html";
+        })
+        .catch((error) => {
+          console.error("Login gagal:", error.message);
+          alert("Login gagal: " + error.message);
+        });
+    };
+  </script>
 
 </body>
 </html>
