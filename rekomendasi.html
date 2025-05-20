@@ -2,121 +2,234 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Rekomendasi Personal - Demo Canggih</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rekomendasi Rutinitas Pintar Canggih</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 700px;
+      margin: 20px auto;
+      background: #f9fafb;
+      color: #333;
+    }
+    h1, h2 {
+      text-align: center;
+      color: #2563eb;
+    }
+    form {
+      background: white;
+      padding: 15px 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin-bottom: 25px;
+    }
+    label {
+      display: block;
+      margin: 12px 0 6px;
+    }
+    select, input[type="checkbox"], button {
+      cursor: pointer;
+    }
+    select, input[type="text"], button {
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      width: 100%;
+      font-size: 1rem;
+    }
+    select[multiple] {
+      height: 120px;
+    }
+    button {
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      margin-top: 15px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #1d4ed8;
+    }
+    .feedback-btn {
+      margin: 0 6px;
+      padding: 4px 8px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      user-select: none;
+    }
+    .feedback-btn.positive {
+      background-color: #16a34a;
+      color: white;
+    }
+    .feedback-btn.negative {
+      background-color: #dc2626;
+      color: white;
+    }
+    #output ul {
+      padding-left: 1rem;
+    }
+  </style>
 </head>
-<body class="bg-gray-100 text-gray-900 min-h-screen flex flex-col items-center p-6">
+<body class="bg-gray-100 text-gray-800">
 
-  <header class="mb-12 text-center">
-    <h1 class="text-4xl font-bold text-blue-600 mb-2">Rutinitas Pintar</h1>
-    <p class="text-gray-700 max-w-xl">Isi preferensi Anda dan dapatkan rekomendasi rutinitas yang disesuaikan.</p>
+  <!-- Header -->
+  <header class="bg-white shadow-xl p-4 flex justify-between items-center">
+    <div class="flex items-center space-x-3">
+    <img src="img\rutinitas pintar.png" alt="Logo" class="h-10 w-auto" />
+    <a href="index.html" class="text-2xl font-bold text-blue-600">Rutinitas Pintar</a>
+  </div>
+    <nav>
+      <a href="index.html" class="text-gray-700 hover:text-blue-600 mx-2">Beranda</a>
+      <a href="fitur.html" class="text-blue-600 font-semibold mx-2">Fitur</a>
+      <a href="tentang.html" class="text-gray-700 hover:text-blue-600 mx-2">Tentang</a>
+      <a href="masuk.html" class="text-gray-700 hover:text-blue-600 mx-2">Masuk</a>
+    </nav>
   </header>
 
-  <!-- Form Input -->
-  <form id="prefForm" class="bg-white p-8 rounded shadow max-w-xl w-full space-y-6">
-    <div>
-      <label for="role" class="block mb-1 font-semibold">Peran Anda</label>
-      <select id="role" required class="w-full border px-3 py-2 rounded">
-        <option value="">-- Pilih --</option>
-        <option value="pelajar">Pelajar</option>
-        <option value="pekerja">Pekerja</option>
-        <option value="lainnya">Lainnya</option>
-      </select>
-    </div>
+<h1>Rekomendasi Rutinitas Pintar Canggih</h1>
 
-    <div>
-      <label class="block mb-1 font-semibold">Tujuan Anda (pilih minimal 1)</label>
-      <div class="flex flex-wrap gap-3">
-        <label><input type="checkbox" name="goals" value="belajar" /> Belajar</label>
-        <label><input type="checkbox" name="goals" value="sehat" /> Sehat</label>
-        <label><input type="checkbox" name="goals" value="relaksasi" /> Relaksasi</label>
-        <label><input type="checkbox" name="goals" value="karir" /> Karir</label>
-      </div>
-    </div>
+<form id="form">
+  <label>Peran:
+    <select id="peran" required>
+      <option value="">-- Pilih --</option>
+      <option value="pelajar">Pelajar</option>
+      <option value="mahasiswa">Mahasiswa</option>
+      <option value="karyawan">Karyawan</option>
+      <option value="freelancer">Freelancer</option>
+    </select>
+  </label>
 
-    <div>
-      <label class="block mb-1 font-semibold">Waktu Luang Anda</label>
-      <select id="availableTime" required class="w-full border px-3 py-2 rounded">
-        <option value="">-- Pilih --</option>
-        <option value="pagi">Pagi</option>
-        <option value="siang">Siang</option>
-        <option value="malam">Malam</option>
-      </select>
-    </div>
+  <label>Tujuan (pilih minimal 1):</label>
+  <label><input type="checkbox" name="tujuan" value="belajar" /> Belajar</label>
+  <label><input type="checkbox" name="tujuan" value="sehat" /> Sehat</label>
+  <label><input type="checkbox" name="tujuan" value="relaksasi" /> Relaksasi</label>
+  <label><input type="checkbox" name="tujuan" value="karir" /> Karir</label>
 
-    <div>
-      <label class="block mb-1 font-semibold">Aktivitas Favorit (pilih minimal 1)</label>
-      <select id="activities" multiple required class="w-full border px-3 py-2 rounded h-24">
-        <option value="olahraga">Olahraga</option>
-        <option value="membaca">Membaca</option>
-        <option value="meditasi">Meditasi</option>
-        <option value="bermain musik">Bermain Musik</option>
-        <option value="ngoding">Ngoding</option>
-      </select>
-      <p class="text-xs text-gray-500 mt-1">Tekan Ctrl/Cmd + klik untuk pilih beberapa</p>
-    </div>
+  <label>Waktu Luang:
+    <select id="waktu" required>
+      <option value="">-- Pilih --</option>
+      <option value="pagi">Pagi</option>
+      <option value="siang">Siang</option>
+      <option value="sore">Sore</option>
+      <option value="malam">Malam</option>
+    </select>
+  </label>
 
-    <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition">Dapatkan Rekomendasi</button>
-  </form>
+  <label>Aktivitas Favorit:</label>
+  <select id="aktivitas" multiple size="6">
+    <option value="olahraga">Olahraga</option>
+    <option value="membaca">Membaca</option>
+    <option value="meditasi">Meditasi</option>
+    <option value="musik">Bermain Musik</option>
+    <option value="berkebun">Berkebun</option>
+    <option value="menulis">Menulis</option>
+  </select>
 
-  <!-- Output Rekomendasi -->
-  <section id="recommendation" class="max-w-xl w-full mt-12 p-6 bg-white rounded shadow hidden">
-    <h2 class="text-2xl font-bold mb-4 text-blue-600">Rekomendasi Rutinitas Anda</h2>
-    <ul class="list-disc list-inside text-gray-800" id="recommendation-list"></ul>
-  </section>
+  <button type="submit">Dapatkan Rekomendasi</button>
+</form>
 
-  <script>
-    const form = document.getElementById('prefForm');
-    const outputSection = document.getElementById('recommendation');
-    const outputList = document.getElementById('recommendation-list');
+<div id="output"></div>
 
-    form.addEventListener('submit', e => {
-      e.preventDefault();
+<script>
+  const dbRekom = {
+    pelajar: {
+      belajar: [{text: 'Pomodoro 25 menit belajar, 5 menit istirahat', score: 5}],
+      sehat: [{text: 'Jalan pagi 15 menit', score: 4}],
+      relaksasi: [{text: 'Meditasi 5 menit', score: 5}],
+      karir: [{text: 'Ikut webinar bidang studi', score: 3}]
+    },
+    mahasiswa: {
+      belajar: [{text: 'Rangkuman materi tiap hari', score: 5}],
+      sehat: [{text: 'Olahraga ringan sore hari', score: 4}],
+      relaksasi: [{text: 'Yoga pagi hari', score: 5}],
+      karir: [{text: 'Magang sesuai jurusan', score: 5}]
+    },
+    karyawan: {
+      belajar: [{text: 'Ikut kursus online tiap bulan', score: 5}],
+      sehat: [{text: 'Senam ringan tiap pagi', score: 5}],
+      relaksasi: [{text: 'Meditasi setelah kerja', score: 5}],
+      karir: [{text: 'Buat target mingguan', score: 4}]
+    },
+    freelancer: {
+      belajar: [{text: 'Baca artikel industri tiap pagi', score: 4}],
+      sehat: [{text: 'Stretching tiap jam', score: 4}],
+      relaksasi: [{text: 'Musik instrumental saat kerja', score: 4}],
+      karir: [{text: 'Portofolio online', score: 5}]
+    }
+  };
 
-      // Ambil data dari form
-      const role = form.role.value;
-      const goals = Array.from(form.querySelectorAll('input[name="goals"]:checked')).map(el => el.value);
-      const availableTime = form.availableTime.value;
-      const activitiesSelect = form.activities;
-      const preferredActivities = Array.from(activitiesSelect.selectedOptions).map(opt => opt.value);
+  const userFeedback = {};
 
-      // Mulai rekomendasi
-      const rekomendasi = [];
-
-      // Contoh aturan sederhana
-      if(role === 'pelajar') {
-        rekomendasi.push("Gunakan waktu " + availableTime + " untuk sesi belajar fokus.");
+  function getTopRecommendations(peran, tujuan) {
+    let rekomList = [];
+    tujuan.forEach(tj => {
+      if (dbRekom[peran] && dbRekom[peran][tj]) {
+        rekomList = rekomList.concat(dbRekom[peran][tj]);
       }
-      if(goals.includes('sehat') && preferredActivities.includes('olahraga')) {
-        rekomendasi.push("Tambahkan olahraga 30 menit di waktu " + availableTime + ".");
-      }
-      if(goals.includes('relaksasi') && preferredActivities.includes('meditasi')) {
-        rekomendasi.push("Luangkan 10 menit meditasi sebelum tidur.");
-      }
-      if(goals.includes('karir') && role === 'pekerja') {
-        rekomendasi.push("Sisihkan waktu untuk pengembangan skill terkait karir.");
-      }
-      if(preferredActivities.includes('membaca')) {
-        rekomendasi.push("Jadwalkan waktu membaca buku favorit Anda.");
-      }
-      if(preferredActivities.includes('ngoding')) {
-        rekomendasi.push("Alokasikan waktu untuk latihan ngoding secara rutin.");
-      }
-
-      // Jika rekomendasi kosong, kasih fallback
-      if(rekomendasi.length === 0) {
-        rekomendasi.push("Coba eksplorasi aktivitas baru yang membuat Anda lebih produktif dan bahagia.");
-      }
-
-      // Tampilkan hasil
-      outputList.innerHTML = rekomendasi.map(item => <li>${item}</li>).join('');
-      outputSection.classList.remove('hidden');
-
-      // Scroll ke hasil
-      outputSection.scrollIntoView({ behavior: 'smooth' });
     });
-  </script>
+
+    rekomList = rekomList.map(r => {
+      const key = `${peran}-${r.text}`;
+      if (userFeedback[key]) {
+        return {...r, score: r.score + userFeedback[key]};
+      }
+      return r;
+    });
+
+    return rekomList.sort((a, b) => b.score - a.score).slice(0, 5);
+  }
+
+  function simpanFeedback(peran, rekom, nilai) {
+    const key = `${peran}-${rekom}`;
+    if (!userFeedback[key]) userFeedback[key] = 0;
+    userFeedback[key] += nilai;
+  }
+
+  document.getElementById('form').addEventListener('submit', e => {
+    e.preventDefault();
+    const peran = document.getElementById('peran').value;
+    const waktu = document.getElementById('waktu').value;
+    const tujuan = Array.from(document.querySelectorAll('input[name="tujuan"]:checked')).map(el => el.value);
+    const aktivitas = Array.from(document.getElementById('aktivitas').selectedOptions).map(opt => opt.value);
+
+    if (!peran || !waktu || tujuan.length === 0) {
+      alert('Mohon lengkapi peran, waktu luang, dan tujuan.');
+      return;
+    }
+
+    const rekomendasi = getTopRecommendations(peran, tujuan);
+    let html = `<h2>Rekomendasi untuk <b>${peran}</b> di waktu <b>${waktu}</b>:</h2><ul>`;
+    rekomendasi.forEach(r => {
+      html += `<li>${r.text} 
+        <button class="feedback-btn positive" data-text="${r.text}" data-peran="${peran}" data-nilai="1">👍</button> 
+        <button class="feedback-btn negative" data-text="${r.text}" data-peran="${peran}" data-nilai="-1">👎</button>
+      </li>`;
+    });
+    html += '</ul>';
+
+    if (aktivitas.length > 0) {
+      html += `<p>Jangan lupa luangkan waktu untuk: <b>${aktivitas.join(', ')}</b></p>`;
+    }
+
+    const output = document.getElementById('output');
+    output.innerHTML = html;
+
+    document.querySelectorAll('.feedback-btn').forEach(btn => {
+      btn.onclick = () => {
+        const teks = btn.getAttribute('data-text');
+        const peran = btn.getAttribute('data-peran');
+        const nilai = parseInt(btn.getAttribute('data-nilai'));
+        simpanFeedback(peran, teks, nilai);
+        alert(`Terima kasih atas feedback Anda (${nilai > 0 ? 'positif' : 'negatif'}) untuk: "${teks}"`);
+      };
+    });
+  });
+</script>
 
 </body>
 </html>
