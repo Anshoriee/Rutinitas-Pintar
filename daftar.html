@@ -6,24 +6,24 @@
   <title>DAFTAR | Rutinitas Pintar</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
 </head>
-<body class="bg-gray-100 text-gray-800">
 
+<body class="bg-gray-100 text-gray-800">
   <!-- Header -->
-  <header class="bg-white shadow-lg p-4 flex justify-between items-center">
+  <header class="bg-white shadow p-4 flex justify-between items-center">
     <h1 class="text-2xl font-bold text-blue-600">Rutinitas Pintar</h1>
     <nav>
       <a href="index.html" class="text-gray-700 hover:text-blue-600 mx-2">Beranda</a>
       <a href="fitur.html" class="text-gray-700 hover:text-blue-600 mx-2">Fitur</a>
       <a href="tentang.html" class="text-gray-700 hover:text-blue-600 mx-2">Tentang</a>
-      <a href="masuk.html" class="text-gray-700 hover:text-blue-600 mx-2">Masuk</a>
+      <a href="masuk.html" class="text-blue-600 font-semibold mx-2">Masuk</a>
     </nav>
   </header>
 
-  <!-- Daftar Section -->
+  <!-- Register Section -->
   <section class="flex justify-center items-center min-h-screen px-4 bg-gray-100">
     <div class="bg-white shadow-lg rounded-xl w-full max-w-md p-8">
       <h2 class="text-2xl font-bold text-center text-blue-600 mb-6">Buat Akun Baru</h2>
-      <form action="#" method="POST" class="space-y-5">
+      <form id="registerForm" class="space-y-5">
         <div>
           <label for="name" class="block text-sm font-medium mb-1">Nama Lengkap</label>
           <input type="text" id="name" name="name" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -36,14 +36,10 @@
           <label for="password" class="block text-sm font-medium mb-1">Kata Sandi</label>
           <input type="password" id="password" name="password" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
-        <div>
-          <label for="confirm-password" class="block text-sm font-medium mb-1">Konfirmasi Kata Sandi</label>
-          <input type="password" id="confirm-password" name="confirm-password" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-        </div>
         <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition">Daftar</button>
       </form>
       <p class="text-center text-sm text-gray-600 mt-6">
-        Sudah punya akun? <a href="masuk.html" class="text-blue-600 hover:underline">Masuk di sini</a>
+        Sudah punya akun? <a href="masuk.html" class="text-blue-600 hover:underline">Masuk</a>
       </p>
     </div>
   </section>
@@ -52,6 +48,54 @@
   <footer class="bg-white border-t py-6 text-center text-gray-600">
     &copy; 2025 Rutinitas Pintar. All rights reserved.
   </footer>
+
+  <!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAbmJ3dhsuSgHXTEyZ6KRf0pbROnW9lU5k",
+    authDomain: "rutinitas-pintar.firebaseapp.com",
+    projectId: "rutinitas-pintar",
+    storageBucket: "rutinitas-pintar.appspot.com",
+    messagingSenderId: "444383560768",
+    appId: "1:444383560768:web:314a411378a066f52a8ba5",
+    measurementId: "G-LZS5J5KZJQ"
+  };
+
+  // Inisialisasi Firebase
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  // Handle Form Register
+  document.getElementById('registerForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+
+    try {
+      const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+      const user = userCredential.user;
+
+      await db.collection("users").doc(user.uid).set({
+        uid: user.uid,
+        name: name,
+        email: user.email,
+        createdAt: new Date()
+      });
+
+      alert(`Akun berhasil dibuat. Selamat datang, ${name}`);
+      window.location.href = "index.html";
+    } catch (error) {
+      alert("Pendaftaran gagal: " + error.message);
+    }
+  });
+</script>
 
 </body>
 </html>
