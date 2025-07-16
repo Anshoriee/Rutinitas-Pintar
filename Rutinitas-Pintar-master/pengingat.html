@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pengingat Pintar - Rutinitas Pintar</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+  <!-- Header -->
+  <header class="bg-white shadow-xl p-4 flex justify-between items-center">
+    <div class="flex items-center space-x-3">
+    <img src="img\rutinitas pintar.png" alt="Logo" class="h-10 w-auto" />
+    <a href="index.html" class="text-2xl font-bold text-blue-600">Rutinitas Pintar</a>
+  </div>
+    <nav>
+      <a href="index.html" class="text-gray-700 hover:text-blue-600 mx-2">Beranda</a>
+      <a href="fitur.html" class="text-blue-600 font-semibold mx-2">Fitur</a>
+      <a href="tentang.html" class="text-gray-700 hover:text-blue-600 mx-2">Tentang</a>
+      <a href="masuk.html" class="text-gray-700 hover:text-blue-600 mx-2">Masuk</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-r from-blue-600 to-teal-500 text-white py-20 text-center">
+    <h2 class="text-4xl font-bold mb-4">Pengingat Pintar</h2>
+    <p class="text-lg max-w-2xl mx-auto">Fitur pengingat otomatis yang menjaga Anda tetap berada di jalur rutinitas harian, tepat waktu dan tanpa stres.</p>
+  </section>
+
+    <!-- Konten Utama -->
+  <section class="py-16 px-6 md:px-16 bg-white shadow-robot">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+      <div>
+        <h3 class="text-2xl font-semibold mb-4 text-blue-600">Notifikasi Tepat Waktu</h3>
+        <p class="text-gray-700 mb-4">Dapatkan pengingat otomatis untuk setiap aktivitas harian Anda, dari bangun pagi hingga waktu istirahat malam. Semua bisa disesuaikan.</p>
+        <ul class="list-disc list-inside text-gray-700">
+          <li>Jadwal fleksibel sesuai kebutuhan</li>
+          <li>Integrasi dengan kalender dan aplikasi lainnya</li>
+          <li>Tampilan alarm dan nada pengingat khusus</li>
+        </ul>
+      </div>
+      <div>
+        <img src="img/fitur-pengingat.png" alt="Ilustrasi Pengingat Pintar" class="rounded-lg shadow-md">
+      </div>
+    </div>
+  </section>
+
+  <!-- Form Pengingat -->
+  <section class="max-w-3xl mx-auto my-12 bg-white p-6 rounded-lg shadow-lg">
+    <h3 class="text-2xl font-semibold text-blue-600 mb-6">📝 Tambah Pengingat Baru</h3>
+    <form id="reminderForm" class="space-y-4">
+      <div>
+        <label for="reminderText" class="block text-sm font-medium text-gray-700">Judul Pengingat</label>
+        <input type="text" id="reminderText" class="w-full p-2 border border-gray-300 rounded shadow-md" required />
+      </div>
+      <div>
+        <label for="reminderTime" class="block text-sm font-medium text-gray-700">Waktu Pengingat</label>
+        <input type="datetime-local" id="reminderTime" class="w-full p-2 border border-gray-300 rounded shadow-md" required />
+      </div>
+      <div class="flex gap-2">
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 shadow-md">Simpan</button>
+        <button type="button" id="clearAll" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 shadow-md">Hapus Semua</button>
+      </div>
+    </form>
+
+    <!-- Filter -->
+    <div class="mt-6">
+      <label class="block mb-2 font-semibold text-gray-700">🔍 Filter Pengingat:</label>
+      <select id="filter" class="w-full p-2 border border-gray-300 rounded shadow-md">
+        <option value="all">Semua</option>
+        <option value="active">Aktif</option>
+        <option value="expired">Kedaluwarsa</option>
+      </select>
+    </div>
+
+    <!-- List -->
+    <div id="reminderList" class="mt-8">
+      <h4 class="text-lg font-semibold mb-2 text-gray-800">📌 Daftar Pengingat:</h4>
+      <ul id="reminders" class="space-y-2"></ul>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t py-6 text-center text-gray-600">
+    &copy; 2025 Rutinitas Pintar. All rights reserved.
+  </footer>
+
+  <!-- Notifikasi Audio -->
+  <audio id="notifSound" src="https://www.myinstants.com/media/sounds/mixkit-clear-announce-tones-2861.mp3" preload="auto"></audio>
+
+  <!-- Script -->
+  <script>
+    const form = document.getElementById('reminderForm');
+    const reminderList = document.getElementById('reminders');
+    const clearAllBtn = document.getElementById('clearAll');
+    const filterSelect = document.getElementById('filter');
+    const notifSound = document.getElementById('notifSound');
+
+    function loadReminders() {
+      const filter = filterSelect.value;
+      const reminders = JSON.parse(localStorage.getItem('reminders')) || [];
+      reminderList.innerHTML = '';
+
+      const filtered = reminders.filter(r => {
+        const isPast = new Date(r.time) < new Date();
+        if (filter === 'active') return !isPast;
+        if (filter === 'expired') return isPast;
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        reminderList.innerHTML = '<p class="text-gray-500">Tidak ada pengingat.</p>';
+        return;
+      }
+
+      filtered.forEach((r, index) => {
+        const isPast = new Date(r.time) < new Date();
+        const li = document.createElement('li');
+        const className = `p-4 rounded-md flex justify-between items-center ${!isPast ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`;
+        li.className = className;
+
+        li.innerHTML = `
+          <div>
+            <strong>${r.text}</strong><br>
+            <small>${new Date(r.time).toLocaleString('id-ID')}</small>
+          </div>
+          <button onclick="deleteReminder(${index})" class="text-red-500 hover:text-red-700 font-semibold">&times;</button>
+        `;
+
+        reminderList.appendChild(li);
+      });
+    }
+
+    function deleteReminder(index) {
+      const reminders = JSON.parse(localStorage.getItem('reminders')) || [];
+      reminders.splice(index, 1);
+      localStorage.setItem('reminders', JSON.stringify(reminders));
+      loadReminders();
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const text = document.getElementById('reminderText').value.trim();
+      const time = document.getElementById('reminderTime').value;
+
+      if (!text) {
+        alert('Judul pengingat tidak boleh kosong.');
+        return;
+      }
+      if (new Date(time) < new Date()) {
+        alert('Waktu pengingat tidak boleh di masa lalu.');
+        return;
+      }
+
+      const reminders = JSON.parse(localStorage.getItem('reminders')) || [];
+      reminders.push({ text, time, notified: false });
+      localStorage.setItem('reminders', JSON.stringify(reminders));
+      form.reset();
+      document.getElementById('reminderText').focus();
+      loadReminders();
+    });
+
+    clearAllBtn.addEventListener('click', () => {
+      if (confirm('Yakin ingin menghapus semua pengingat?')) {
+        localStorage.removeItem('reminders');
+        loadReminders();
+      }
+    });
+
+    filterSelect.addEventListener('change', loadReminders);
+
+    function requestNotificationPermission() {
+      if ('Notification' in window && Notification.permission !== 'granted') {
+        Notification.requestPermission();
+      }
+    }
+
+    function checkReminders() {
+      const reminders = JSON.parse(localStorage.getItem('reminders')) || [];
+      const now = new Date();
+      let updated = false;
+
+      reminders.forEach((reminder) => {
+        const reminderTime = new Date(reminder.time);
+        const isDue = Math.abs(now - reminderTime) < 60000;
+
+        if (isDue && !reminder.notified) {
+          showNotification(reminder.text);
+          reminder.notified = true;
+          updated = true;
+        }
+      });
+
+      if (updated) {
+        localStorage.setItem('reminders', JSON.stringify(reminders));
+        loadReminders();
+      }
+    }
+
+    function showNotification(text) {
+      if (Notification.permission === 'granted') {
+        new Notification('⏰ Pengingat!', {
+          body: text,
+          icon: 'https://cdn-icons-png.flaticon.com/512/1827/1827392.png'
+        });
+        notifSound.play();
+      }
+    }
+
+    window.addEventListener('load', () => {
+      requestNotificationPermission();
+      document.getElementById('reminderText').focus();
+      loadReminders();
+      setInterval(checkReminders, 60000); // Cek setiap menit
+    });
+  </script>
+</body>
+</html>

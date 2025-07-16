@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Analisis | Rutinitas Pintar</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+
+  <!-- Header -->
+  <header class="bg-white shadow-xl p-4 flex justify-between items-center sticky top-0 z-20">
+    <div class="flex items-center space-x-3">
+      <img src="img/rutinitas pintar.png" alt="Logo" class="h-10 w-auto" />
+      <a href="index.html" class="text-2xl font-bold text-blue-600">Rutinitas Pintar</a>
+    </div>
+    <nav>
+      <a href="index.html" class="text-gray-700 hover:text-blue-600 mx-2">Beranda</a>
+      <a href="fitur.html" class="text-blue-600 font-semibold mx-2">Fitur</a>
+      <a href="tentang.html" class="text-gray-700 hover:text-blue-600 mx-2">Tentang</a>
+      <a href="masuk.html" class="text-gray-700 hover:text-blue-600 mx-2">Masuk</a>
+    </nav>
+  </header>
+
+  <!-- Section: Dashboard Analisis -->
+  <section class="py-12 px-6 md:px-16 bg-white rounded-xl shadow-lg max-w-7xl mx-auto mb-16">
+    <h2 class="text-4xl font-bold text-blue-600 mb-10 text-center">Dashboard Analisis Produktivitas</h2>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+      <div class="p-6 bg-gray-50 rounded-xl shadow hover:shadow-xl transition text-center">
+        <h3 class="text-lg font-medium text-indigo-600">Total Pengingat</h3>
+        <p id="totalReminders" class="text-4xl font-bold mt-2">0</p>
+      </div>
+      <div class="p-6 bg-gray-50 rounded-xl shadow hover:shadow-xl transition text-center">
+        <h3 class="text-lg font-medium text-indigo-600">Hari Paling Sibuk</h3>
+        <p id="busiestDay" class="text-4xl font-bold mt-2">-</p>
+      </div>
+      <div class="p-6 bg-gray-50 rounded-xl shadow hover:shadow-xl transition text-center">
+        <h3 class="text-lg font-medium text-indigo-600">Rata-rata Per Hari</h3>
+        <p id="avgPerDay" class="text-4xl font-bold mt-2">0</p>
+      </div>
+      <div class="p-6 bg-gray-50 rounded-xl shadow hover:shadow-xl transition text-center">
+        <h3 class="text-lg font-medium text-indigo-600">Konsistensi Mingguan</h3>
+        <p id="weeklyConsistency" class="text-4xl font-bold mt-2">0%</p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+      <div>
+        <h4 class="text-xl font-semibold text-indigo-600 mb-3">Aktivitas 7 Hari Terakhir</h4>
+        <canvas id="chart7days"></canvas>
+      </div>
+      <div>
+        <h4 class="text-xl font-semibold text-indigo-600 mb-3">Distribusi Jam Aktivitas</h4>
+        <canvas id="chartHourly"></canvas>
+      </div>
+    </div>
+
+    <section class="bg-indigo-50 rounded-xl p-6 mb-12">
+      <h3 class="text-2xl font-bold text-indigo-600 mb-4">🔍 Insight & Goals AI</h3>
+      <ul class="list-disc list-inside text-gray-700 space-y-2">
+        <li id="insightTrend"></li>
+        <li id="insightPeak"></li>
+        <li id="insightSuggestion"></li>
+        <li id="goalTracking"></li>
+      </ul>
+    </section>
+
+    <section class="grid md:grid-cols-2 gap-6">
+      <div class="p-6 bg-indigo-50 rounded-lg">
+        <h4 class="text-lg font-semibold mb-2">🗓 Prediksi Aktivitas Besok</h4>
+        <p id="aiPrediction" class="text-gray-700">Memuat...</p>
+      </div>
+      <div class="p-6 bg-indigo-50 rounded-lg">
+        <h4 class="text-lg font-semibold mb-2">📊 Skor Produktivitas Hari Ini</h4>
+        <p id="aiScore" class="text-4xl font-bold text-indigo-600">--</p>
+      </div>
+    </section>
+  </section>
+
+  <!-- CTA -->
+  <section class="text-center py-12 bg-blue-600 text-white">
+    <h3 class="text-2xl font-semibold mb-4">Siap Menjadi Lebih Teratur?</h3>
+    <p class="mb-6">Gabung sekarang dan mulai susun rutinitas cerdasmu sendiri.</p>
+    <a href="daftar.html" class="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-200 transition">Daftar Sekarang</a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t py-6 text-center text-gray-600">
+    &copy; 2025 Rutinitas Pintar. All rights reserved.
+  </footer>
+
+  <!-- Script Analisis -->
+  <script>
+    const data = JSON.parse(localStorage.getItem('reminders')) || [];
+    const now = new Date();
+
+    document.getElementById('totalReminders').textContent = data.length;
+
+    const daysCount = Array(7).fill(0);
+    const labels7 = ['6 Hari Lalu','5 Hari','4 Hari','3 Hari','2 Hari','Kemarin','Hari Ini'];
+    data.forEach(r => {
+      const diff = Math.floor((now - new Date(r.time)) / (1000*60*60*24));
+      if (diff >=0 && diff<7) daysCount[6-diff]++;
+    });
+
+    const avg = (data.length / 7).toFixed(2);
+    document.getElementById('avgPerDay').textContent = avg;
+
+    const busiestIndex = daysCount.indexOf(Math.max(...daysCount));
+    document.getElementById('busiestDay').textContent = labels7[busiestIndex];
+
+    const consistency = (daysCount.filter(v => v>0).length / 7 * 100).toFixed(0);
+    document.getElementById('weeklyConsistency').textContent = consistency + '%';
+
+    new Chart(document.getElementById('chart7days'), {
+      type:'line',
+      data:{
+        labels: labels7,
+        datasets:[{
+          label:'Pengingat/Hari',
+          data: daysCount,
+          fill:true,
+          backgroundColor:'rgba(99,102,241,0.2)',
+          borderColor:'#6366f1',
+          tension:0.3
+        }]
+      },
+      options: {responsive:true}
+    });
+
+    const hoursCount = Array(24).fill(0);
+    data.forEach(r => {
+      const h = new Date(r.time).getHours();
+      hoursCount[h]++;
+    });
+    new Chart(document.getElementById('chartHourly'), {
+      type:'bar',
+      data:{
+        labels: Array.from({length:24}, (_,i) => i + ':00'),
+        datasets:[{
+          label:'Pengingat',
+          data: hoursCount,
+          backgroundColor:'#3b82f6'
+        }]
+      },
+      options:{
+        scales:{ y: { beginAtZero:true } }
+      }
+    });
+
+    const trend = daysCount[6] - daysCount[5];
+    document.getElementById('insightTrend').textContent = trend > 0
+      ? `📈 Semangat! Aktivitas naik ${trend} hari ini.`
+      : (trend < 0
+        ? `📉 Jangan menyerah! Turun ${-trend} dibanding kemarin.`
+        : `➖ Konsistensi terjaga!`);
+
+    document.getElementById('insightPeak').textContent =
+      `🏆 Hari puncak: ${labels7[busiestIndex]} (${daysCount[busiestIndex]} pengingat)`;
+
+    const suggestions = [
+      'Integrasikan dengan Google Calendar untuk otomatisasi penuh.',
+      'Kelompokkan pengingat dengan tag warna-warni untuk prioritas.',
+      'Set pengingat suara AI untuk momen penting.',
+      'Buat aturan otomatisasi berdasarkan pola kebiasaan.',
+    ];
+    document.getElementById('insightSuggestion').textContent =
+      '💡 Tips AI: ' + suggestions[Math.floor(Math.random()*suggestions.length)];
+
+    const goals = [
+      `🎯 Target harian: ${(avg * 1.2).toFixed(0)} pengingat untuk hari lebih produktif.`,
+      '📆 Tantang dirimu: 7 hari konsisten tanpa terlewat!',
+      '⚡ Mulailah pagi dengan aktivitas terjadwal untuk energi maksimal.'
+    ];
+    document.getElementById('goalTracking').textContent =
+      goals[Math.floor(Math.random()*goals.length)];
+
+    const score = Math.min(100, (data.length * 10 + consistency * 0.5)).toFixed(0);
+    document.getElementById('aiScore').textContent = score;
+
+    const predictedTasks = Math.max(1, Math.round((daysCount[6] + daysCount[5]) / 2));
+    document.getElementById('aiPrediction').textContent =
+      `Besok diprediksi ada ~${predictedTasks} aktivitas utama. Siap bersinar!`;
+  </script>
+</body>
+</html>

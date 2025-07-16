@@ -1,0 +1,1 @@
+"Rutinitas Pintar" adalah website yang membantu pengguna dalam mengatur aktivitas sehari-hari agar lebih teratur dan disiplin. Website ini akan memberikan pengingat, analisis produktivitas, serta rekomendasi rutinitas yang bisa disesuaikan dengan gaya hidup pengguna.
