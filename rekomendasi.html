@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rekomendasi Pintar - Rutinitas Pintar</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/rekomendasi.css">
+
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+  <!-- Header -->
+  <header class="bg-white shadow-xl p-4 flex justify-between items-center">
+    <div class="flex items-center space-x-3">
+      <img src="img/rutinitas pintar.png" alt="Logo" class="h-10 w-auto" />
+      <a href="index.html" class="text-2xl font-bold text-blue-600">Rutinitas Pintar</a>
+    </div>
+    <nav>
+      <a href="index.html" class="text-gray-700 hover:text-blue-600 mx-2">Beranda</a>
+      <a href="fitur.html" class="text-blue-600 font-semibold mx-2">Fitur</a>
+      <a href="tentang.html" class="text-gray-700 hover:text-blue-600 mx-2">Tentang</a>
+      <a href="masuk.html" class="text-gray-700 hover:text-blue-600 mx-2">Masuk</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-r from-blue-600 to-teal-500 text-white py-20 text-center">
+    <h2 class="text-4xl font-bold mb-4">Rekomendasi Rutinitas</h2>
+    <p class="text-lg max-w-2xl mx-auto">Dapatkan saran rutinitas terbaik berdasarkan peran, tujuan, dan aktivitas favorit Anda.</p>
+  </section>
+
+  <!-- Form Section -->
+  <section class="max-w-3xl mx-auto my-12 bg-white p-6 rounded-lg shadow-lg">
+    <h3 class="text-2xl font-semibold text-blue-600 mb-6">📋 Form Rekomendasi Rutinitas</h3>
+    <form id="form" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Peran:</label>
+        <select id="peran" required class="w-full p-2 border border-gray-300 rounded shadow-md">
+          <option value="">-- Pilih --</option>
+          <option value="pelajar">Pelajar</option>
+          <option value="mahasiswa">Mahasiswa</option>
+          <option value="karyawan">Karyawan</option>
+          <option value="freelancer">Freelancer</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Tujuan (pilih minimal 1):</label>
+        <div class="grid grid-cols-2 gap-2 text-sm text-gray-700">
+          <label><input type="checkbox" name="tujuan" value="belajar" /> Belajar</label>
+          <label><input type="checkbox" name="tujuan" value="sehat" /> Sehat</label>
+          <label><input type="checkbox" name="tujuan" value="relaksasi" /> Relaksasi</label>
+          <label><input type="checkbox" name="tujuan" value="karir" /> Karir</label>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Waktu Luang:</label>
+        <select id="waktu" required class="w-full p-2 border border-gray-300 rounded shadow-md">
+          <option value="">-- Pilih --</option>
+          <option value="pagi">Pagi</option>
+          <option value="siang">Siang</option>
+          <option value="sore">Sore</option>
+          <option value="malam">Malam</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Aktivitas Favorit:</label>
+        <select id="aktivitas" multiple size="5" class="w-full p-2 border border-gray-300 rounded shadow-md">
+          <option value="olahraga">Olahraga</option>
+          <option value="membaca">Membaca</option>
+          <option value="meditasi">Meditasi</option>
+          <option value="musik">Bermain Musik</option>
+          <option value="berkebun">Berkebun</option>
+          <option value="menulis">Menulis</option>
+        </select>
+      </div>
+
+      <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 shadow-md">Dapatkan Rekomendasi</button>
+    </form>
+
+    <div id="output" class="mt-8 text-gray-700"></div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t py-6 text-center text-gray-600">
+    &copy; 2025 Rutinitas Pintar. All rights reserved.
+  </footer>
+
+  <script src="rekomendasi.js"></script>
+</body>
+</html>
